@@ -4,6 +4,7 @@ middleMatch
 Usage:
   middleMatch.py dump <article_number>
   middleMatch.py ripquotes <article_number>
+  middleMatch.py cleanjournal <article_number>
 
 Options:
   -h --help     Show this screen.
@@ -21,15 +22,31 @@ def dump(article_number):
     # Parse the data.
     data = [json.loads(line) for line in rawCriticism]
 
-    return data[0][article_number]['ocr']
+    return data[0][article_number]
 
+
+def clean_journal(article_number):
+    article = dump(article_number)
+
+    journal = article['journal'].lower()
+    texts = article['ocr']
+
+    new_texts = []
+
+    for text in texts:
+        text = text.lower()
+        text = re.sub(r"\d* " + journal + "\s*\d*", '', text)
+
+        new_texts.append(text)
+
+    return new_texts
 
 def rip_quotes(article_number):
     regex = r"\"(.+?)\" \(p.+?\)"
 
     data = dump(article_number)
 
-    matches = re.finditer(regex, data[0])
+    matches = re.finditer(regex, data['ocr'][0])
 
     for matchNum, match in enumerate(matches):
         matchNum = matchNum + 1
@@ -50,7 +67,10 @@ if __name__ == "__main__":
     arguments = docopt(__doc__, version='middleMatch')
 
     if(arguments["dump"]):
-        print(dump(int(arguments["<article_number>"])))
+        print(dump(int(arguments["<article_number>"]))['ocr'])
 
     if(arguments["ripquotes"]):
         print(rip_quotes(int(arguments["<article_number>"])))
+
+    if(arguments["cleanjournal"]):
+        print(clean_journal(int(arguments["<article_number>"])))
