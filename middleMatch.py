@@ -15,7 +15,7 @@ import re
 
 
 def dump(article_number):
-    with open('JSTOR.json') as f:
+    with open('txt/JSTOR.json') as f:
         rawCriticism = f.readlines()
 
     # Parse the data.
