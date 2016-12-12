@@ -3,6 +3,7 @@ import unittest
 from dataLoader.middleMatch import MiddleMatch
 from TextMatcher import Text, Matcher
 
+
 class TestDocumentZero(unittest.TestCase):
     article = None
     novel = None
@@ -20,6 +21,7 @@ class TestDocumentZero(unittest.TestCase):
 
         # Load Middlemarch itself
         with open('../txt/middlemarch.txt') as f:
+        #with open('../public_texts/section.txt') as f:
             rawMM = f.read()
 
         self.novel = Text(rawMM, 'Middlemarch', removeStopwords=False)

@@ -34,9 +34,9 @@ class Text:
         # print(spans)
         self.length = spans[-1][-1]
         tokens = tokenizer.tokenize(self.text)
-        tokens = [token.lower() for token in tokens]  # make them lowercase
-        stemmer = LancasterStemmer()
-        tokens = [stemmer.stem(token) for token in tokens]
+        #tokens = [token.lower() for token in tokens]  # make them lowercase
+        #stemmer = LancasterStemmer()
+        #tokens = [stemmer.stem(token) for token in tokens]
         if not removeStopwords:
             self.spans = spans
             return tokens
@@ -120,12 +120,12 @@ class Matcher:
         This does the main work of finding matching n-gram sequences between
         the texts.
         """
-        sequence = SequenceMatcher(None, self.textAgrams, self.textBgrams)
+        sequence = SequenceMatcher(None, self.textAgrams, self.textBgrams, autojunk=False)
         matchingBlocks = sequence.get_matching_blocks()
 
         # Only return the matching sequences that are higher than the
         # threshold given by the user.
-        highMatchingBlocks = [match for match in matchingBlocks if match.size > self.threshold]
+        highMatchingBlocks = [match for match in matchingBlocks]
 
         numBlocks = len(highMatchingBlocks)
         self.numMatches = numBlocks
