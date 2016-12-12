@@ -120,12 +120,12 @@ class Matcher:
         This does the main work of finding matching n-gram sequences between
         the texts.
         """
-        sequence = SequenceMatcher(None, self.textAgrams, self.textBgrams, autojunk=False)
+        sequence = SequenceMatcher(None, self.textAgrams, self.textBgrams)
         matchingBlocks = sequence.get_matching_blocks()
 
         # Only return the matching sequences that are higher than the
         # threshold given by the user.
-        highMatchingBlocks = [match for match in matchingBlocks]
+        highMatchingBlocks = [match for match in matchingBlocks if match.size > self.threshold]
 
         numBlocks = len(highMatchingBlocks)
         self.numMatches = numBlocks
